@@ -11,7 +11,7 @@ from eth_abi import abi
 from random import choices
 from random import randint
 
-#
+
 # load the environment variables by calling the load_dotenv function
 #
 load_dotenv()
@@ -120,7 +120,7 @@ def generate_surveys(admin_account):
     # agree with the number of titles in the excel file
     #
     total_surveys_generated = get_surveys_generated(deployer_contract)
-    print(f"Total number of surveys generated {total_surveys_generated}" )
+    #print(f"Total number of surveys generated {total_surveys_generated}" )
     return total_surveys_generated
     # return total_surveys_generated
 
@@ -129,7 +129,7 @@ def generate_surveys(admin_account):
 # the function injects fictitious responses to the survey, generating 4 random choices from a list - A, B, C or D
 #
 def respond_to_surveys(num_surveys_generated):
-    print(f"num_surveys_generated {num_surveys_generated}")
+    #print(f"num_surveys_generated {num_surveys_generated}")
     survey_deployer_contract = get_survey_deployer_contract()
     response_options_list = ['A','B','C','D']
     responder_address = get_responder_address()
@@ -142,7 +142,8 @@ def respond_to_surveys(num_surveys_generated):
             choice_list = choices(response_options_list,k=4)
             print(f"survey_address: {survey_address} {choice_list} {responder_address}")
             survey_contract.functions.addSurveyresponse(choice_list).transact({'from':responder_address, 'gas':3000000})
-            print(f"()")
+            
+           
 #
 # function list_surveys_and_responses
 #
@@ -150,16 +151,16 @@ def surveys_and_responses_report(survey_deployer_contract):
     num_surveys_generated = get_surveys_generated(survey_deployer_contract)
     for i in range(num_surveys_generated):
         survey_address = survey_deployer_contract.functions.getSurveyAddressAtIndex(i).call()
-        print(f"survey_address: {survey_address}")
+       #print(f"survey_address: {survey_address}")
         if(survey_address != '0x0000000000000000000000000000000000000000'):
             survey_contract = get_survey_contract(survey_address)
             val = survey_contract.functions.getSurvey().call()
-            print(val)
+            #print(val)
             num_responses = survey_contract.functions.numSurveyResponses().call()
             for i in range(num_responses):
                 responder = survey_contract.functions.getSurveyResponderAtIndex(i).call() 
                 response = survey_contract.functions.getSurveyResponseAtIndex(i).call()
-                print(f"responder: {responder}, response: {response}")
+               # print(f"responder: {responder}, response: {response}")
 
 if __name__ == '__main__':
     # objective 1: generate surveys
